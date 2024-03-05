@@ -1,0 +1,27 @@
+<!--<div class="filter mat-elevation-z8">
+    <mat-form-field>
+        <mat-label>Page</mat-label>
+        <input matInput [(ngModel)]="page" type="number" min="1" max="60" placeholder="1">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="button" (click)="applyFilter()">Apply filter</button>
+    <button mat-raised-button color="primary" class="button" (click)="resetFields()">Reset fields</button>
+</div>-->
+
+<div *ngIf="objectList.length > 0">
+    <div class="list">
+        <div *ngFor="let item of paginatedList">
+            <app-card [dataSource]="item"></app-card> <!--*ngIf="item?.show" -->
+        </div>
+    </div>
+    <!--<div class="centerer">
+        <mat-paginator showFirstLastButtons [length]="objectList.length" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="handlePage($event)" aria-label="Select page"
+            class="paginator mat-elevation-z8">
+        </mat-paginator>
+    </div>-->
+</div>
+<div *ngIf="objectList.length < 1" class="error">
+    <img src="assets/images/search_error.png" alt="error img">
+    <p>Dead end! No results found for the selected filter.</p>
+</div>

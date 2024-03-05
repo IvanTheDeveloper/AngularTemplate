@@ -1,0 +1,97 @@
+mat-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #333333;
+    width: 200px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    background-color: #333333;
+    transition: .5s ease;
+}
+
+mat-card:hover {
+    background-color: #3d4e52;
+}
+
+mat-card-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+mat-card-subtitle {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.avatar {
+    border-radius: 100%;
+}
+
+.avatar:hover {
+    opacity: 0.5;
+}
+
+.img {
+    max-height: 100px;
+    width: 100px;
+    display: block;
+    border-radius: 10px;
+    transition: .5s ease;
+}
+
+.img:hover {
+    transform: scale(1.1);
+}
+
+.img-container {
+    position: relative;
+    border-radius: 10px;
+}
+
+.img-container:hover .overlay2 {
+    opacity: 1;
+    transform: scale(0);
+    border-radius: 100%;
+}
+
+.img-container:hover .overlay {
+    opacity: 0.9;
+    transform: scale(1.1);
+    border-radius: 10px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #25bbe8;
+}
+
+.overlay2 {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #ffffff;
+}
+
+span {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    color: #ffffff;
+    padding: 10%;
+}

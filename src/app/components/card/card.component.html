@@ -1,0 +1,20 @@
+<mat-card class="example-card" *ngIf="true">
+    <mat-card-header>
+        <img mat-card-avatar class="avatar" src="{{dataSource?.image ?? placeholderImg}}"
+            onerror="this.src=='placeholderImg'" alt="profile picture">
+        <mat-card-title>{{dataSource?.nombre}}</mat-card-title>
+        <mat-card-subtitle>{{dataSource?.asignatura}}</mat-card-subtitle>
+    </mat-card-header>
+    <div class="img-container">
+        <img mat-card-image class="img" src="{{dataSource?.image ?? placeholderImg}}" onerror="this.src=='placeholderImg'" alt="image">
+        <div class="overlay"><span>ID: {{dataSource?.id}}</span></div>
+    </div>
+    <mat-card-content>
+        <span></span>
+    </mat-card-content>
+    <mat-card-actions>
+        <a mat-icon-button href="https://www.youtube.com/watch?v=pr-f1MHqwBM"
+            target="_blank"><mat-icon>share</mat-icon></a>
+        <button mat-icon-button [color]="likeColor" (click)="like()"><mat-icon>favorite</mat-icon></button>
+    </mat-card-actions>
+</mat-card>

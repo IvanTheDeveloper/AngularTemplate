@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>{{ data.isAdd ? 'Añadir' : 'Editar' }} Alumno</h1>
+<div mat-dialog-content>
+    <form [formGroup]="checkoutForm">
+
+        <mat-form-field>
+            <mat-label>ID</mat-label>
+            <input formControlName="id" matInput type="text" placeholder="ID del alumno" [disabled]="!data.isAdd">
+            <div *ngIf="id?.invalid && (id?.dirty || id?.touched)">
+                <mat-error *ngIf="id?.hasError('required')">Este campo es obligatorio</mat-error>
+            </div>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input formControlName="nombre" matInput type="text" placeholder="Nombre del alumno">
+            <div *ngIf="nombre?.invalid && (nombre?.dirty || nombre?.touched)">
+                <mat-error *ngIf="nombre?.hasError('required')">Este campo es obligatorio</mat-error>
+            </div>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label
+                *ngIf="checkoutForm.get('imagen')?.value; else newFile">{{checkoutForm.get('imagen')?.value.name}}</mat-label>
+            <ng-template #newFile>
+                <mat-label>Seleccionar Imagen</mat-label>
+            </ng-template>
+            <input matInput disabled>
+            <button mat-icon-button matSuffix (click)="fileInput.click()">
+                <mat-icon>cloud_upload</mat-icon>
+            </button>
+            <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
+        </mat-form-field>
+        <img *ngIf="checkoutForm.get('imagen')?.value" [src]="getImageUrl()" alt="img preview" width="100">
+
+        <div mat-dialog-actions>
+            <button mat-button (click)="cancelClick()">Cancelar</button>
+            <button mat-button [disabled]="!checkoutForm.valid" (click)="onSubmit()">Guardar</button>
+        </div>
+
+    </form>
+</div>

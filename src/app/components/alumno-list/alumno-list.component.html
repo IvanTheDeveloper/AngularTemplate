@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="title">
+        <h2>Lista de alumnos</h2>
+        <div class="buttons">
+            <button mat-fab color="primary" aria-label="Añadir alumno" (click)="addObject()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="tableData">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" matPaginator>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por ID">ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por nombre">Nombre</th>
+                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="imagen">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por imagen">Imagen</th>
+                <td mat-cell *matCellDef="let element"><img src="{{element.image}}" alt="profile picture"></td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="accion">
+                <th mat-header-cell *matHeaderCellDef>Acción</th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button aria-label="Eliminar alumno" (click)="removeObject(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button aria-label="Editar alumno" (click)="editObject(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator showFirstLastButtons [length]="objectList.length" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="handlePage($event)" aria-label="Select page"
+            class="paginator mat-elevation-z8"></mat-paginator>
+
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<mat-toolbar color="primary" class="header-toolbar">
+    <button mat-icon-button [matMenuTriggerFor]="menu" (click)="update()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>La Orlabeda</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
+        (click)="drawer.toggle(); update()">
+        <mat-icon>person</mat-icon>
+    </button>
+</mat-toolbar>
+
+<mat-menu #menu>
+    <button mat-menu-item routerLink="/orlas">Orlas</button>
+    <button mat-menu-item [matMenuTriggerFor]="personas" [disabled]="!userAuthenticated">Personas</button>
+    <mat-menu #personas>
+        <button mat-menu-item routerLink="/profesores">Profesores</button>
+        <button mat-menu-item routerLink="/alumnos">Alumnos</button>
+    </mat-menu>
+</mat-menu>
+
+<mat-drawer-container class="example-container" autosize hasBackdrop>
+    <mat-drawer #drawer mode="over" position="end">
+        <span *ngIf="!userAuthenticated">Actualmente no estás autenticado</span>
+        <span *ngIf="userAuthenticated">Autenticado como {{username}}</span>
+        <mat-divider></mat-divider>
+        <button mat-button routerLink="/register" *ngIf="!userAuthenticated">
+            <mat-icon>person</mat-icon>
+            <span>Registrarse</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-button routerLink="/login" *ngIf="!userAuthenticated">
+            <mat-icon>login</mat-icon>
+            <span>Iniciar Sesión</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-button (click)="navLogout()" *ngIf="userAuthenticated">
+            <mat-icon>logout</mat-icon>
+            <span>Cerrar Sesión</span>
+        </button>
+    </mat-drawer>
+    <div style="display: inline;">
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>
