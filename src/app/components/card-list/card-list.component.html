@@ -1,38 +1,46 @@
-<div class="filter mat-elevation-z8">
-    <mat-form-field>
-        <mat-label>ID</mat-label>
-        <input matInput [(ngModel)]="id" placeholder="id">
-    </mat-form-field>
+<div class="container">
 
-    <mat-form-field>
-        <mat-label>Nombre</mat-label>
-        <input matInput [(ngModel)]="nombre" placeholder="nombre">
-    </mat-form-field>
+    <div class="filter mat-elevation-z8">
+        <mat-form-field>
+            <mat-label>ID</mat-label>
+            <input matInput [(ngModel)]="id" placeholder="id">
+        </mat-form-field>
 
-    <button mat-raised-button color="primary" class="button" (click)="applyFilter()">Aplicar filtro</button>
-    <button mat-raised-button color="primary" class="button" (click)="resetFields()">Vaciar campos</button>
-</div>
+        <mat-form-field>
+            <mat-label>Nombre</mat-label>
+            <input matInput [(ngModel)]="nombre" placeholder="nombre">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" class="button" (click)="applyFilter()">Aplicar filtro</button>
+        <button mat-raised-button color="primary" class="button" (click)="resetFields()">Vaciar campos</button>
+    </div>
 
 
-<div *ngIf="progressSpinner" class="spinner" >
-    <mat-spinner mode="indeterminate" [diameter]="200"></mat-spinner>
-</div>
-<div *ngIf="filteredList.length > 0; else noResults">
-    <div class="list">
-        <div *ngFor="let item of paginatedList">
-            <app-card [dataSource]="item"></app-card> <!--*ngIf="item?.show" -->
+    <div *ngIf="progressSpinner" class="spinner">
+        <mat-spinner mode="indeterminate" [diameter]="200"></mat-spinner>
+    </div>
+
+    <div *ngIf="filteredList.length > 0; else noResults">
+        <div class="list">
+            <div *ngFor="let item of paginatedList">
+                <app-card [dataSource]="item"></app-card> <!--*ngIf="item?.show" -->
+            </div>
         </div>
+
+        <div class="centerer">
+            <mat-paginator showFirstLastButtons [length]="filteredList.length" [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions" (page)="handlePage($event)" aria-label="Select page"
+                class="paginator mat-elevation-z8">
+            </mat-paginator>
+        </div>
+
     </div>
-    <div class="centerer">
-        <mat-paginator showFirstLastButtons [length]="filteredList.length" [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions" (page)="handlePage($event)" aria-label="Select page"
-            class="paginator mat-elevation-z8">
-        </mat-paginator>
-    </div>
+
+    <ng-template #noResults>
+        <div *ngIf="!progressSpinner" class="error">
+            <img src="assets/images/search_error.png" alt="error img">
+            <span>Dead end! No results found, try emtying the filter or reloading the page.</span>
+        </div>
+    </ng-template>
+
 </div>
-<ng-template #noResults >
-    <div *ngIf="!progressSpinner" class="error">
-        <img src="assets/images/search_error.png" alt="error img">
-        <span>Dead end! No results found, try emtying the filter or reloading the page.</span>
-    </div>
-</ng-template>

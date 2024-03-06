@@ -74,8 +74,8 @@ export class ProfesorListComponent {
             result.image = imagePath;
             this.dataService.addObject(result).subscribe(
               (response) => {
-                this.objectList.push(result);
-                this.paginateData(); // Update pagination after adding object
+                this.objectList.push(result)
+                this.paginateData()
                 console.log("subido correctamente")
               },
               (error) => {
@@ -91,30 +91,54 @@ export class ProfesorListComponent {
   }
 
   editObject(obj: any): void {
-    console.log(obj)
     const dialogRef = this.dialog.open(ProfesorFormComponent, {
       width: '400px',
       data: { isAdd: false, info: obj },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-
       if (result) {
-        this.dataService.updateObject(result).subscribe(
-          () => {
-            let index = this.objectList.findIndex(p => p.id === result.id);
-            if (index >= 0 && index < this.objectList.length) {
-              this.objectList[index] = result;
-              this.paginateData(); // Update pagination after editing object
+        // Si se proporciona una nueva imagen, subirla a Firestore y actualizar la ruta en el objeto
+        if (result.image && result.image !== obj.image) {
+          const filePath = `images/${Date.now()}_${result.image.name}`;
+          this.uploadFileService.uploadFile(filePath, result.image).then(
+            (imagePath) => {
+              // Eliminar la imagen antigua
+              this.uploadFileService.deleteFile(obj.image).then(
+                () => {
+                  result.image = imagePath; // Asignar la nueva ruta de imagen
+                  this.updateObject(result); // Actualizar el objeto en la base de datos
+                }
+              ).catch((error) => {
+                console.log("Error al eliminar la imagen antigua:", error);
+              });
             }
-            this.showSnackbar('actualizado correctamente', 'success-message')
-          },
-          () => {
-            this.showSnackbar('no se pudo editar', 'error-message')
-          }
-        )
+          ).catch((error) => {
+            console.log("Error al subir la nueva imagen:", error);
+          });
+        } else {
+          // Si no se proporciona una nueva imagen, mantener la imagen existente y actualizar otros campos
+          result.image = obj.image;
+          this.updateObject(result); // Actualizar el objeto en la base de datos
+        }
       }
     });
+  }
+
+  private updateObject(result: any): void {
+    this.dataService.updateObject(result).subscribe(
+      () => {
+        const index = this.objectList.findIndex((p) => p.id === result.id);
+        if (index >= 0 && index < this.objectList.length) {
+          this.objectList[index] = result;
+          this.paginateData(); // Actualizar paginación después de editar objeto
+        }
+        this.showSnackbar('Actualizado correctamente', 'success-message');
+      },
+      () => {
+        this.showSnackbar('No se pudo editar', 'error-message');
+      }
+    );
   }
 
   removeObject(obj: any): void {
@@ -168,5 +192,5 @@ export class ProfesorListComponent {
       }
     )
   }
-  
+
 }

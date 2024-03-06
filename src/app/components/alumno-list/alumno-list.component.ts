@@ -48,16 +48,16 @@ export class AlumnoListComponent {
   }
 
   paginateData(): void {
-    const startIndex = this.pageIndex * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.paginator.length = this.objectList.length;
-    this.dataSource.data = this.objectList.slice(startIndex, endIndex);
+    const startIndex = this.pageIndex * this.pageSize
+    const endIndex = startIndex + this.pageSize
+    this.paginator.length = this.objectList.length
+    this.dataSource.data = this.objectList.slice(startIndex, endIndex)
   }
 
   handlePage(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.paginateData();
+    this.pageIndex = event.pageIndex
+    this.pageSize = event.pageSize
+    this.paginateData()
   }
 
   addObject(): void {
@@ -68,14 +68,14 @@ export class AlumnoListComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const filePath = `images/${Date.now()}_${result.image.name}`;
+        const filePath = `images/${Date.now()}_${result.image.name}`
         this.uploadFileService.uploadFile(filePath, result.image).then(
           (imagePath) => {
             result.image = imagePath;
             this.dataService.addObject(result).subscribe(
               (response) => {
-                this.objectList.push(result);
-                this.paginateData(); // Update pagination after adding object
+                this.objectList.push(result)
+                this.paginateData()
                 console.log("subido correctamente")
               },
               (error) => {
@@ -91,37 +91,61 @@ export class AlumnoListComponent {
   }
 
   editObject(obj: any): void {
-    console.log(obj)
     const dialogRef = this.dialog.open(AlumnoFormComponent, {
       width: '400px',
       data: { isAdd: false, info: obj },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-
       if (result) {
-        this.dataService.updateObject(result).subscribe(
-          () => {
-            let index = this.objectList.findIndex(p => p.id === result.id);
-            if (index >= 0 && index < this.objectList.length) {
-              this.objectList[index] = result;
-              this.paginateData(); // Update pagination after editing object
+        // Si se proporciona una nueva imagen, subirla a Firestore y actualizar la ruta en el objeto
+        if (result.image && result.image !== obj.image) {
+          const filePath = `images/${Date.now()}_${result.image.name}`;
+          this.uploadFileService.uploadFile(filePath, result.image).then(
+            (imagePath) => {
+              // Eliminar la imagen antigua
+              this.uploadFileService.deleteFile(obj.image).then(
+                () => {
+                  result.image = imagePath; // Asignar la nueva ruta de imagen
+                  this.updateObject(result); // Actualizar el objeto en la base de datos
+                }
+              ).catch((error) => {
+                console.log("Error al eliminar la imagen antigua:", error);
+              });
             }
-            this.showSnackbar('actualizado correctamente', 'success-message')
-          },
-          () => {
-            this.showSnackbar('no se pudo editar', 'error-message')
-          }
-        )
+          ).catch((error) => {
+            console.log("Error al subir la nueva imagen:", error);
+          });
+        } else {
+          // Si no se proporciona una nueva imagen, mantener la imagen existente y actualizar otros campos
+          result.image = obj.image;
+          this.updateObject(result); // Actualizar el objeto en la base de datos
+        }
       }
     });
   }
 
+  private updateObject(result: any): void {
+    this.dataService.updateObject(result).subscribe(
+      () => {
+        const index = this.objectList.findIndex((p) => p.id === result.id);
+        if (index >= 0 && index < this.objectList.length) {
+          this.objectList[index] = result;
+          this.paginateData(); // Actualizar paginación después de editar objeto
+        }
+        this.showSnackbar('Actualizado correctamente', 'success-message');
+      },
+      () => {
+        this.showSnackbar('No se pudo editar', 'error-message');
+      }
+    );
+  }
+
   removeObject(obj: any): void {
-    let objName = obj.nombre;
+    let objName = obj.nombre
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: { objName }
-    });
+    })
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -130,10 +154,10 @@ export class AlumnoListComponent {
             this.uploadFileService.deleteFile(obj.image).then(
               () => {
                 this.showSnackbar('eliminado correctamente', 'success-message')
-                let index = this.objectList.findIndex(p => p.id === obj.id);
+                let index = this.objectList.findIndex(p => p.id === obj.id)
                 if (index >= 0 && index < this.objectList.length) {
-                  this.objectList.splice(index, 1);
-                  this.paginateData(); // Update pagination after removing object
+                  this.objectList.splice(index, 1)
+                  this.paginateData()
                 }
               }
             ).catch()
@@ -150,13 +174,13 @@ export class AlumnoListComponent {
     this.snackBar.open(mensaje, 'Cerrar', {
       duration: 3000,
       panelClass: [clase]
-    });
+    })
   }
 
   saveObjectList() {
     let objectDictionary: { [id: string]: any } = {};
     this.objectList.forEach(p => {
-      objectDictionary[p.id] = p;
+      objectDictionary[p.id] = p
     });
     console.log(objectDictionary)
     this.dataService.saveObjectList(objectDictionary).subscribe(
@@ -168,5 +192,5 @@ export class AlumnoListComponent {
       }
     )
   }
-  
+
 }

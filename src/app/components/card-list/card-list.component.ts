@@ -1,15 +1,15 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { AlumnosDataService } from 'src/app/services/alumnos-data.service';
 import { ProfesoresDataService } from 'src/app/services/profesores-data.service';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-card-list',
   templateUrl: './card-list.component.html',
   styleUrls: ['./card-list.component.scss']
 })
-export class CardListComponent implements AfterViewInit {
+export class CardListComponent {
   objectList: any[] = []
   progressSpinner = false
 
@@ -27,11 +27,8 @@ export class CardListComponent implements AfterViewInit {
   constructor(private alumnos: AlumnosDataService, private profesores: ProfesoresDataService) { }
 
   ngOnInit(): void {
-    this.getObjectList()  //pillamos los datos de la base de datos y los guardamos en una lista fija para no petar a firebase todo el rato
-  }
-
-  ngAfterViewInit(): void {
-    this.initData() //inicializamos los datos que se van a mostrar que por defecto son todos
+    this.getObjectList()
+    this.initData()  //pillamos los datos de la base de datos y los guardamos en una lista fija para no petar a firebase todo el rato
   }
 
   async initData() {
@@ -75,48 +72,42 @@ export class CardListComponent implements AfterViewInit {
   }
 
   getObjectList(): void {
-    const list: any[] = []
-    this.getProfesores().subscribe(
-      (profList) => {
-        list.push(...profList)
-        this.getAlumnos().subscribe(
-          (aluList) => {
-            list.push(...aluList)
-            this.objectList = list
-          },
-          (error) => {
-            console.log(error)
-          }
-        )
+    forkJoin([this.getProfesores(), this.getAlumnos()]).subscribe(
+      ([profList, aluList]) => {
+        const list: any[] = []
+        if (profList && aluList) {
+          list.push(...profList, ...aluList)
+        }
+        this.objectList = list
       },
       (error) => {
         console.log(error)
       }
-    ) //mezclamos ambas listas en una sola
+    ) //hacemos un remix de profesores y alumnos en la misma lista
   }
 
   getAlumnos(): Observable<any[]> {
     return this.alumnos.getObjectList().pipe(
       map((response) => {
-        return Object.values(response)
+        return response ? Object.values(response) : []
       }),
       catchError((error) => {
         console.log(error)
         return throwError(error)
       })
-    ) //bajamos la lista de alumnos
+    ) //pillamos los alumnos de firebase
   }
 
   getProfesores(): Observable<any[]> {
     return this.profesores.getObjectList().pipe(
       map((response) => {
-        return Object.values(response)
+        return response ? Object.values(response) : []
       }),
       catchError((error) => {
         console.log(error)
         return throwError(error)
       })
-    ) //bajamos la lista de profesores
+    ) //pillamos los profesores de firebase
   }
 
 }
