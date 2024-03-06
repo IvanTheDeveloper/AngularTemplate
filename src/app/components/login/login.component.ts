@@ -32,8 +32,8 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.fieldForm.valid) {
-      const email = this.fieldForm.get('email')?.value;
-      const password = this.fieldForm.get('password')?.value;
+      const email = this.fieldForm.get('email')?.value
+      const password = this.fieldForm.get('password')?.value
       this.auth.login(email, password).then(
         () => {
           this.LoginActions()

@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   signinWithGoogle() {
-    return signInWithPopup(this.auth, new GoogleAuthProvider());
+    return signInWithPopup(this.auth, new GoogleAuthProvider())
   }
 
   logout(): Promise<void> {

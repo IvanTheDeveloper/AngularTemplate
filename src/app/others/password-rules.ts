@@ -18,5 +18,6 @@ rules += lengthEnabled ? `{${minLength},${maxLength}}` : '*'
 rules += '$'
 
 //rules = '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[@#$%&¿?¡!*^-_]).{8,30}$/' //valor seguro de las reglas por defecto
-console.log(rules)
+//console.log('Password RegExp: ' + rules)
+
 export const regularExpression = new RegExp(rules)
