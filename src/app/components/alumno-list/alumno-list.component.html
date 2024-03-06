@@ -13,17 +13,17 @@
 
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por ID">ID</th>
-                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                <td mat-cell *matCellDef="let element"> {{element?.id}} </td>
             </ng-container>
 
             <ng-container matColumnDef="nombre">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por nombre">Nombre</th>
-                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                <td mat-cell *matCellDef="let element"> {{element?.nombre}} </td>
             </ng-container>
 
             <ng-container matColumnDef="imagen">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por imagen">Imagen</th>
-                <td mat-cell *matCellDef="let element"><img src="{{element.image}}" alt="profile picture"></td>
+                <td mat-cell *matCellDef="let element"><img src="{{element?.image}}" alt="profile picture"></td>
 
             </ng-container>
 
