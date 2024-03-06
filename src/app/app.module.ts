@@ -44,9 +44,10 @@ import { MatSelectModule } from '@angular/material/select';
 
 
 //reglas de contraseña válida
-export const pwdRegex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[@#$%&¿?¡!*^-_])/;
+import { regularExpression } from './others/password-rules';
+export const pwdRegExp = regularExpression
 
-//configuracion de firebase
+//configuracion de la conexión con firebase
 export const firebaseConfig = {
   apiKey: "AIzaSyAIPT1kdQ9IXDRRD15jARC03cm8i63HBSI",
   authDomain: "examenangularivan.firebaseapp.com",

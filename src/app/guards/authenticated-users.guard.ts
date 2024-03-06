@@ -13,5 +13,5 @@ export const authenticatedUsersGuard: CanActivateFn = (route, state) => {
     router.navigateByUrl('/login')
     return false
   }
-  
+
 }

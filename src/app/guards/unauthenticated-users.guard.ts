@@ -13,5 +13,5 @@ export const unauthenticatedUsersGuard: CanActivateFn = (route, state) => {
   } else {
     return true
   }
-  
+
 }

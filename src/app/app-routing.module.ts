@@ -9,19 +9,19 @@ import { ProfesorListComponent } from './components/profesor-list/profesor-list.
 import { AlumnoListComponent } from './components/alumno-list/alumno-list.component';
 import { CardListComponent } from './components/card-list/card-list.component';
 
-const landingPage = '/login' //when not authenticated
-const mainPage = '/orlas' //when authenticated
+const landingPage = '/login' //cuando el usuario NO está autenticado
+const mainPage = '/orlas' //cuando el usuario SI está autenticado
 const notFoundPage = undefined
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [unauthenticatedUsersGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [unauthenticatedUsersGuard] },
-  { path: 'orlas', component: CardListComponent, },
+  { path: 'orlas', component: CardListComponent },
   { path: 'profesores', component: ProfesorListComponent, canActivate: [authenticatedUsersGuard] },
   { path: 'alumnos', component: AlumnoListComponent, canActivate: [authenticatedUsersGuard] },
-  { path: '', redirectTo: landingPage, pathMatch: 'full' }, //landing page
-  { path: 'main', redirectTo: mainPage, pathMatch: 'full' }, //main page
-  { path: '**', redirectTo: notFoundPage, component: PageNotFoundComponent }, //page not found
+  { path: '', redirectTo: landingPage, pathMatch: 'full' }, //página por defecto al entrar
+  { path: 'main', redirectTo: mainPage, pathMatch: 'full' }, //página principal para redirecciones
+  { path: '**', redirectTo: notFoundPage, component: PageNotFoundComponent }, //página cuando la url es inválida
 ]
 
 @NgModule({

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { pwdRegex } from 'src/app/app.module';
+import { pwdRegExp } from 'src/app/app.module';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class RegisterComponent {
 
     this.fieldForm = this.fb.group({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(30), Validators.pattern(pwdRegex)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(30), Validators.pattern(pwdRegExp)]),
       confirmPassword: new FormControl('', [Validators.required]),
     }, {
       validators: this.validate('password', 'confirmPassword')
