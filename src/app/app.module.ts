@@ -50,13 +50,13 @@ export const pwdRegExp = regularExpression
 
 //configuracion de la conexión con firebase
 export const firebaseConfig = {
-  apiKey: "AIzaSyAIPT1kdQ9IXDRRD15jARC03cm8i63HBSI",
-  authDomain: "examenangularivan.firebaseapp.com",
-  databaseURL: "https://examenangularivan-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "examenangularivan",
-  storageBucket: "examenangularivan.appspot.com",
-  messagingSenderId: "231610393351",
-  appId: "1:231610393351:web:c945b316c4fdcb687e9ba2"
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 @NgModule({
